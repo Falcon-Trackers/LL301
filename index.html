@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jimi IoT LL301 · LTE Cat 1 Asset GNSS Tracker</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2300a3e0'/%3E%3Cpath d='M32 12a13 13 0 0 0-13 13c0 10 13 27 13 27s13-17 13-27A13 13 0 0 0 32 12z' fill='%23fff'/%3E%3Ccircle cx='32' cy='25' r='5' fill='%2300a3e0'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#fff;--soft:#f5f6f8;--card:#fff;--line:#e6e8ec;--text:#111318;--muted:#5f6675;--acc:#0a8fd6;--acc2:#e8802a;--glow:rgba(10,143,214,.18);--sh:0 10px 30px -14px rgba(20,30,60,.25);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+:root[data-theme="dark"]{--bg:#0d0f14;--soft:#151821;--card:#171a23;--line:#262a36;--text:#f1f3f8;--muted:#98a0b3;--acc:#38b6f5;--glow:rgba(56,182,245,.2);--sh:0 10px 30px -14px rgba(0,0,0,.7);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"Inter","SF Pro Display",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;flex-direction:column;transition:background .35s,color .35s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.bar{max-width:1120px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.95rem}
+.logo{font-weight:800;letter-spacing:-.02em;color:var(--acc);font-size:1.15rem}
+.brand span+span{color:var(--muted);font-weight:500}
+.tabs{position:relative;display:flex;gap:2px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{position:relative;z-index:1;background:none;border:0;color:var(--muted);font:inherit;font-size:.85rem;font-weight:500;padding:8px 16px;border-radius:999px;cursor:pointer;transition:color .25s}
+.tabs button.on{color:var(--text)}
+.ind{position:absolute;top:4px;bottom:4px;left:0;border-radius:999px;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.18);transition:transform .45s cubic-bezier(.3,1.3,.5,1),width .45s cubic-bezier(.3,1.3,.5,1)}
+.theme{background:var(--soft);border:1px solid var(--line);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1rem;transition:transform .3s cubic-bezier(.3,1.5,.5,1)}
+.theme:hover{transform:rotate(25deg) scale(1.08)}
+main{flex:1;max-width:1120px;width:100%;margin:0 auto;padding:44px 22px 56px}
+.slide{display:none}
+.slide.on{display:block}
+.slide.on>*{animation:up .6s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--i,0)*70ms)}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--acc2);padding:5px 12px;border-radius:8px;margin-bottom:16px}
+h1{font-size:clamp(2.2rem,5vw,3.4rem);letter-spacing:-.035em;line-height:1.05}
+h1 small{display:block;font-size:.42em;font-weight:400;color:var(--muted);letter-spacing:-.01em;margin-top:8px}
+h2{font-size:1.7rem;letter-spacing:-.02em;margin-bottom:6px}
+.lead{color:var(--muted);line-height:1.65;margin:18px 0 26px;max-width:560px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.feats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh)}
+.f{padding:14px 16px;transition:transform .3s cubic-bezier(.3,1.4,.5,1),border-color .25s}
+.f:hover{transform:translateY(-3px);border-color:var(--acc)}
+.f b{display:block;font-size:.9rem;margin-bottom:3px}.f span{font-size:.8rem;color:var(--muted);line-height:1.45}
+.stage{position:relative;display:grid;place-items:center;min-height:440px;border-radius:28px;background:var(--soft);border:1px solid var(--line);overflow:hidden}
+.stage::before{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%);animation:breathe 5s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.2)}}
+.stage img{position:relative;height:380px;max-width:80%;object-fit:contain;filter:drop-shadow(0 24px 30px rgba(0,0,0,.35));animation:bob 6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-1.5deg)}}
+.chip{position:absolute;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.78rem;font-weight:600;box-shadow:var(--sh);animation:bob 5s ease-in-out infinite}
+.chip i{font-style:normal;color:var(--acc)}
+.c1{top:9%;left:7%}.c2{top:42%;right:5%;animation-delay:-1.5s}.c3{bottom:9%;left:9%;animation-delay:-3s}
+.calc{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+.pad{padding:28px}
+.row{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:26px 0 20px}
+.k{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.big{font-size:1.3rem;font-weight:700;margin-top:3px}
+.pn{font-size:2.8rem;font-weight:800;line-height:1;color:var(--acc);text-align:right;letter-spacing:-.03em}
+.bump{animation:bump .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bump{40%{transform:scale(1.08)}}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;background:var(--line);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--bg);border:4px solid var(--acc);box-shadow:0 0 0 6px var(--glow);transition:transform .15s}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--bg);border:4px solid var(--acc)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15)}
+.ticks{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-top:12px}
+.mode{display:inline-flex;gap:8px;align-items:center;margin-top:20px;font-size:.85rem;padding:9px 14px;border-radius:12px;background:var(--soft);border:1px solid var(--line)}
+.sms{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.btn{font:inherit;font-size:.85rem;font-weight:600;color:var(--text);background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:9px 16px;cursor:pointer;transition:transform .2s cubic-bezier(.3,1.5,.5,1),border-color .2s}
+.btn:hover{border-color:var(--acc);transform:translateY(-2px)}.btn:active{transform:scale(.96)}
+.btn.p{background:var(--text);color:var(--bg);border-color:var(--text)}
+.drawer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.3,1,.5,1)}
+.drawer.on{grid-template-rows:1fr}.drawer>div{overflow:hidden}
+.cmd{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border-radius:14px;background:var(--soft);border:1px solid var(--line)}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;color:var(--acc);font-size:1rem}
+.res{display:flex;flex-direction:column;justify-content:space-between}
+.days{font-size:clamp(2.6rem,6vw,3.8rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin:8px 0}
+.meter{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:14px 0 6px}
+.meter i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .6s cubic-bezier(.3,1,.5,1)}
+.m{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;padding:14px 16px;border-radius:14px;background:var(--soft);border:1px solid var(--line)}
+.m small{display:block;color:var(--muted);font-size:.74rem;margin-top:2px}.m strong{font-size:1.1rem;white-space:nowrap}
+.uc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0}
+.u{overflow:hidden;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}.u:hover{transform:translateY(-4px)}
+.u div{position:relative;height:170px;overflow:hidden}
+.u img{width:100%;height:100%;object-fit:cover;transition:transform .6s}.u:hover img{transform:scale(1.06)}
+.u em{position:absolute;left:0;top:0;font-style:normal;font-size:.78rem;font-weight:600;color:#fff;background:var(--acc2);padding:6px 14px;border-radius:0 0 12px 0}
+.u p{padding:14px 16px;font-size:.84rem;color:var(--muted);line-height:1.5}
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.s{padding:14px 16px;border-radius:14px;background:var(--soft);border:1px solid var(--line)}
+.s .k{color:var(--acc);margin-bottom:5px}.s b{font-size:.88rem;font-weight:600;line-height:1.4;display:block}
+.s.w{grid-column:span 2}
+footer{max-width:1120px;margin:0 auto;padding:0 22px 28px;color:var(--muted);font-size:.74rem;width:100%}
+@media(max-width:900px){.hero,.calc,.uc{grid-template-columns:1fr}.specs{grid-template-columns:repeat(2,1fr)}.stage{min-height:380px}.stage img{height:320px}}
+@media(max-width:520px){.feats{grid-template-columns:1fr}.tabs button{padding:8px 10px;font-size:.78rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand"><span class="logo">Jimi IoT</span><span>LL301</span></div>
+  <nav class="tabs" id="tabs"><i class="ind" id="ind"></i>
+    <button class="on" data-i="0">Overview</button><button data-i="1">Battery &amp; pings</button><button data-i="2">Applications &amp; specs</button>
+  </nav>
+  <button class="theme" id="theme" title="Toggle theme" aria-label="Toggle theme">◐</button>
+</div></header>
+
+<main>
+<section class="slide on" id="s0">
+  <div class="hero">
+    <div style="--i:0">
+      <span class="tag">Asset management</span>
+      <h1>LL301<small>LTE Cat 1 Asset GNSS Tracker</small></h1>
+      <p class="lead">Ultra-long standby from a 10,000mAh large-capacity battery in a durable housing. Multiple positioning systems cover indoor and outdoor, with instant alerts for device removal, vibration and more, monitored through the cloud platform and mobile app.</p>
+      <div class="feats">
+        <div class="card f"><b>GPS &amp; BDS &amp; LBS positioning</b><span>A synergy of positioning systems keeps locations accurate on the cloud platform.</span></div>
+        <div class="card f"><b>LTE &amp; GSM network</b><span>4G LTE communication with 2G GSM fallback.</span></div>
+        <div class="card f"><b>10,000mAh rechargeable battery</b><span>Long standby, and easily recharged for re-deployment.</span></div>
+        <div class="card f"><b>Remote listen-in (VoLTE)</b><span>Inconspicuous mic for remote audio monitoring around the device.</span></div>
+        <div class="card f"><b>Multiple alerts</b><span>Cover removal, device removal, abnormal vibration, low battery and more.</span></div>
+        <div class="card f"><b>Multiple working modes</b><span>Configurable to your actual demands.</span></div>
+        <div class="card f"><b>Strong magnetic base</b><span>Near-zero installation on most metal surfaces.</span></div>
+        <div class="card f"><b>Bluetooth configuration</b><span>Fast, simple setup via the iOS app.</span></div>
+      </div>
+    </div>
+    <div class="stage" style="--i:2">
+      <img src="assets/hero.png" alt="Jimi IoT LL301 tracker">
+      <span class="chip c1"><i>●</i> IP65</span><span class="chip c2"><i>●</i> &lt; 2.5 m CEP</span><span class="chip c3"><i>●</i> Up to 2 yr standby</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s1">
+  <div class="calc">
+    <div class="card pad" style="--i:0">
+      <span class="tag">Standby estimator</span>
+      <h2>Select daily update frequency</h2>
+      <p class="lead" style="margin:6px 0 0">Drag the scale to change pings (location updates) per day and see the battery endurance.</p>
+      <div class="row">
+        <div><div class="k">Upload interval</div><div class="big" id="iv">Every 10 minutes</div></div>
+        <div><div class="pn" id="pc">144</div><div class="k" style="text-align:right">Pings / day</div></div>
+      </div>
+      <input type="range" id="sl" min="0" max="10" step="1" value="4" aria-label="Pings per day">
+      <div class="ticks"><span>1 / day</span><span>4 / day</span><span>24 / day</span><span>144 / day</span><span>1,440 / day</span><span>8,640 / day</span></div>
+      <div class="mode"><span style="color:var(--muted)">Active profile</span><b id="ml"></b></div>
+      <div class="sms">
+        <button class="btn" id="tg">👁 Show SMS command</button>
+        <div class="drawer" id="dr"><div><div class="cmd"><div><div class="k" style="margin-bottom:4px">Device SMS configuration command</div><code id="cm"></code></div><button class="btn p" id="cp">Copy command</button></div></div></div>
+      </div>
+    </div>
+    <div class="card pad res" style="--i:1">
+      <div>
+        <span class="tag">Estimated battery endurance</span>
+        <div class="k">24-hour / standard standby</div>
+        <div class="days" id="sd">50 days</div>
+        <div class="meter"><i id="mt"></i></div>
+        <div class="k">Based on the 10,000mAh industrial Li-Polymer cell</div>
+      </div>
+      <div style="margin-top:24px">
+        <div class="m"><div>Moving 2 h / day standby<small>Tracking mode, uploads only in motion</small></div><strong id="mv"></strong></div>
+        <div class="m"><div>Total estimated pings<small>Over a full battery charge</small></div><strong id="tp"></strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s2">
+  <span class="tag" style="--i:0">Applications &amp; specifications</span>
+  <h2 style="--i:1;font-size:2rem">Built for high-value assets and fleets</h2>
+  <div class="uc" style="--i:2">
+    <div class="card u"><div><img src="assets/app-1.jpg" alt="Logistics truck"><em>Logistics</em></div><p>Long-haul trailer, container and cargo visibility with cover-removal and tamper alerts.</p></div>
+    <div class="card u"><div><img src="assets/app-2.jpg" alt="Vehicle rental"><em>Vehicle rental</em></div><p>Magnetic placement, remote listen-in (VoLTE) and instant alerts for abnormal events.</p></div>
+    <div class="card u"><div><img src="assets/app-3.jpg" alt="Fleet of trucks and vans"><em>Fleet management</em></div><p>Working modes configurable for powered and non-powered assets, via iOS app (BT 5.0) or SMS.</p></div>
+  </div>
+  <div class="specs" style="--i:3">
+    <div class="s"><div class="k">Positioning</div><b>GPS + BDS + LBS<br>&lt; 2.5 m CEP</b></div>
+    <div class="s"><div class="k">Sensitivity</div><b>Tracking −165 dBm<br>Acquisition −148 dBm</b></div>
+    <div class="s"><div class="k">TTFF (open sky)</div><b>Hot start ≤ 1 s<br>Cold start ≤ 32 s</b></div>
+    <div class="s"><div class="k">Network</div><b>LTE Cat 1 + GSM fallback</b></div>
+    <div class="s w"><div class="k">LL301-E bands</div><b>LTE-FDD B1/B3/B7/B8/B20/B28 · GSM 900/1800 MHz</b></div>
+    <div class="s w"><div class="k">LL301-L bands</div><b>LTE-FDD B1/B2/B3/B4/B5/B7/B8/B28/B66 · GSM 850/900/1800/1900 MHz</b></div>
+    <div class="s"><div class="k">Battery</div><b>10,000mAh / 3.7V Li-Polymer</b></div>
+    <div class="s"><div class="k">Working modes</div><b>1 Regular GPS · 2 Tracking · 3 Power-saving</b></div>
+    <div class="s"><div class="k">Standby</div><b>Up to 2 years in power-saving mode</b></div>
+    <div class="s"><div class="k">Size &amp; weight</div><b>108.5 × 61.1 × 30 mm · 260 g</b></div>
+    <div class="s"><div class="k">Environment</div><b>IP65 · −20 °C to +70 °C<br>5%–95% RH, non-condensing</b></div>
+    <div class="s"><div class="k">Interface</div><b>1 red status LED · 4 blue battery LEDs · Nano-SIM</b></div>
+    <div class="s"><div class="k">Tamper &amp; sensors</div><b>Pressure-sensitive button<br>3-axis accelerometer · BT 5.0</b></div>
+    <div class="s w"><div class="k">Alerts</div><b>Low battery · Tamper · Vibration · Cover removal · Power off</b></div>
+  </div>
+</section>
+</main>
+<footer>Source: Jimi IoT LL301 product leaflet (www.jimilab.com). For reference only and subject to change without further notice.</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+// [pings, interval, mode label, standby, moving 2h, days, SMS command]
+const P=[
+[1,"Every 24 hours (1,440 min)","Mode 3 · Power-saving (1 ping/day)","2 years (730 days)","N/A (scheduled wake)",730,"mode,3,00:00,1440,1,1,1#"],
+[2,"Every 12 hours (720 min)","Mode 3 · Power-saving (2 pings/day)","1 year (365 days)","N/A (scheduled wake)",365,"mode,3,00:00,720,1,1,1#"],
+[4,"Every 6 hours (360 min)","Mode 3 · Power-saving (4 pings/day)","6 months (~180 days)","N/A (scheduled wake)",180,"mode,3,00:00,360,1,1,1#"],
+[24,"Every 1 hour (60 min)","Mode 3 · Power-saving (24 pings/day)","4 months (~120 days)","N/A (scheduled wake)",120,"mode,3,00:00,60,1,1,1#"],
+[144,"Every 10 minutes (600 s)","Mode 2 · Tracking (600 s)","50 days","60 days",50,"mode,2,600,0,1,1,1,1#"],
+[288,"Every 5 minutes (300 s)","Mode 2 · Tracking (300 s)","35 days","50 days",35,"mode,2,300,0,1,1,1,1#"],
+[480,"Every 3 minutes (180 s)","Mode 2 · Tracking (180 s)","30 days","45 days",30,"mode,2,180,0,1,1,1,1#"],
+[1440,"Every 1 minute (60 s)","Mode 2 · Tracking (60 s)","25 days","40 days",25,"mode,2,60,0,1,1,1,1#"],
+[2880,"Every 30 seconds (30 s)","Mode 2 · Tracking (30 s)","10 days","35 days",10,"mode,2,30,0,1,1,1,1#"],
+[8640,"Every 10 seconds (10 s)","Mode 2 · Tracking (10 s)","7 days","35 days",7,"mode,2,10,0,1,1,1,1#"],
+[8640,"Every 10 seconds (continuous timing)","Mode 1 · Regular GPS (10 s fixed)","7 days","7 days (24 h active)",7,"mode,1,10,1,1,1#"]];
+const bump=e=>{e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump")};
+function calc(){
+  const p=P[+$("sl").value];
+  $("pc").textContent=p[0].toLocaleString();bump($("pc"));
+  $("iv").textContent=p[1];$("ml").textContent=p[2];$("sd").textContent=p[3];$("mv").textContent=p[4];
+  $("tp").textContent=(p[0]*p[5]).toLocaleString()+" pings";$("cm").textContent=p[6];
+  $("mt").style.width=Math.max(4,Math.log(p[5])/Math.log(730)*100)+"%";
+  $("cp").textContent="Copy command";
+}
+$("sl").oninput=calc;
+$("tg").onclick=()=>{const o=$("dr").classList.toggle("on");$("tg").textContent=o?"🙈 Hide SMS command":"👁 Show SMS command"};
+$("cp").onclick=async()=>{
+  const t=$("cm").textContent;
+  try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement("textarea");a.value=t;document.body.append(a);a.select();try{document.execCommand("copy")}catch(_){}a.remove()}
+  $("cp").textContent="Copied ✓";setTimeout(()=>$("cp").textContent="Copy command",2000);
+};
+const tabs=[...document.querySelectorAll("#tabs button")];
+function go(i){
+  document.querySelectorAll(".slide").forEach((s,k)=>s.classList.toggle("on",k===i));
+  tabs.forEach((b,k)=>b.classList.toggle("on",k===i));
+  const b=tabs[i];$("ind").style.width=b.offsetWidth+"px";$("ind").style.transform=`translateX(${b.offsetLeft}px)`;
+}
+tabs.forEach(b=>b.onclick=()=>go(+b.dataset.i));
+addEventListener("resize",()=>go(tabs.findIndex(b=>b.classList.contains("on"))));
+$("theme").onclick=()=>{const r=document.documentElement;r.dataset.theme=getComputedStyle(r).colorScheme==="dark"?"light":"dark"};
+calc();go(0);
+</script>
+</body>
+</html>
